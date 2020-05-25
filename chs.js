@@ -288,7 +288,7 @@ var cnRegReplace = new Map([
     [/^Increase Factor (.+) for (.+) OP$/, '增加因子 $1 花费 $2 OP'],
     [/^Reward: Factor (.+) boosts Tier (.+) and$/, '奖励：因子 $1 增强自动化T $2 和T'],
     [/^You have (.+) boosters$/, '您有$1个助推器'],
-    [/^Infinity to gain (.+) Ordinal Points \(I$/, '点击无限，以获得 $1 序数点 \(我'],
+    [/^Infinity to gain (.+) Ordinal Points \(I$/, '点击无限，以获得 $1 序数点 \(I'],
     [/^per second\n(.+)$/, '每秒'],
     [/^Cost: (.+) ℵ$/, '成本: $1 ℵ'],
     [/^Goal: (.+) OP$/, '目标：$1 OP'],
