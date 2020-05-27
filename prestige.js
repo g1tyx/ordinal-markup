@@ -72,7 +72,7 @@ function factorShift(manmade=0) {
 function factorBoost(manmade=0) {
   if (game.OP>=V(game.factorBoosts+3,1)&&game.challenge==0) {
     if (manmade==1&&game.fbConfirm==1) {
-      if (!confirm("Are you sure you want to do a Factor Boost?" + (game.upgrades.includes(8)?" Don't forget to check Incrementy!":""))) return
+      if (!confirm("你确定要做因子提升吗?" + (game.upgrades.includes(8)?" 别忘了检查增量!":""))) return
     }
     game.boosters += getFactorBoostGain()
     game.factorBoosts += getFactorBulk()*getFBmult()
@@ -81,7 +81,7 @@ function factorBoost(manmade=0) {
 }
 
 function refund() {
-  let conf = (game.bConf.ref==1?confirm("Are you sure you want to refund your booster? You'll reset this Factor Boost!"):true)
+  let conf = (game.bConf.ref==1?confirm("你确定要退还你的助推器吗?您将重置此因子提升!"):true)
   if (conf) {
   if (game.bConf.refFB==1) factorBoost()
   game.boosters += calcRefund()
@@ -138,7 +138,7 @@ function collapse(manmade=0) {
   }
   } else {
     if (manmade==1) {
-      if (confirm("Do you want to restart this current collapse to restart the collapse timer?")) {
+      if (confirm("您是否要重新启动当前崩溃以重启崩溃计时器？")) {
         resetEverythingCollapseDoes()
       }
     }

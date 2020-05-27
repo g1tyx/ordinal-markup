@@ -35,7 +35,7 @@ function completeChallenge() {
 
 function enterChallenge(c) {
   if (game.challenge == 0 && game.challengeCompletion[c-1] != 3 && game.chal8 == 0) {
-    let conf = (game.bConf.chal==1?confirm("Are you sure you want to start a challenge? You'll forfeit your current run in favor of the challenge."):true)
+    let conf = (game.bConf.chal==1?confirm("您确定要发起挑战吗？ 您将放弃当前的比赛，以迎接挑战。"):true)
     if (conf) {
       if (game.bConf.chalFB==1) factorBoost()
       if (game.qolSM.abu==1&&game.leastBoost<=1.5) {
@@ -49,7 +49,7 @@ function enterChallenge(c) {
 
 function enterChallenge8() {
   if (game.challenge == 0) {
-    let conf = (game.bConf.chal==1?confirm("Are you sure you want to start a challenge? You'll forfeit your current run in favor of the challenge."):true)
+    let conf = (game.bConf.chal==1?confirm("您确定要发起挑战吗？ 您将放弃当前的比赛，以迎接挑战。"):true)
     if (conf) {
       if (game.bConf.chalFB==1) factorBoost()
       refundAction()

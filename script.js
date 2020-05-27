@@ -115,7 +115,7 @@ function loop(ms,off=0) {
       completeChallenge()
     }
   }
-  if (game.chal8==1 && calcRefund()>0) confirm("You failed Challenge 8 because you had booster upgrades on you!")
+  if (game.chal8==1 && calcRefund()>0) confirm("您未通过挑战8的原因是您获得了增强升级！")
   if (game.chal8==1 && calcRefund()>0) refund()
   game.boosters=game.factorBoosts*(game.factorBoosts+1)/2 - calcRefund() + calcSlugMile()
   if (game.leastBoost <= 1e10 && game.OP < calcTotalOPGain()) {
@@ -496,7 +496,7 @@ function dup(n,spectate=0) {
 
 
 function assign(a,b,c) {
-  let assigning = (game.assBefore==0?confirm("Are you sure you want to assign to this? (Hint: go for ℵ1 for your first cardinal, but it's ultimately your choice)"):true)
+  let assigning = (game.assBefore==0?confirm("您确定要分配给这个吗？ （提示：您的第一位基数要价ℵ1，但最终由您选择）"):true)
   if (assigning&&game.cardinals.gte(b)) {
     let bulk = EN(c==1?game.cardinals.divide(b).floor():1).times(b)
     game.cardinals = game.cardinals.minus(bulk)
@@ -669,11 +669,11 @@ function bup(x,spectate=0) {
       if (!(x==12 && !(getSumOfChallenges() >= 7)) && !(x==16 && !(getSumOfChallenges() >= 22)) && !(x==20 && !(getSumOfChallenges() >= 33)) && (x<4.5||game.upgrades.includes(x-4))) {
         if (spectate==0) {
           if (x==16) {
-            let a=confirm("Buying this upgrade will destroy everything booster destroys, along with all of your upgrades, autobuyers, challenges, incrementy, incrementy upgrades, and manifolds for a single currency of the next prestige layer. Are you ready for this?")
+            let a=confirm("购买这个升级将摧毁助推器摧毁的一切，连同你的所有升级，自动购买者，挑战，增量，增量升级，和歧管为单一货币的下一个声望层。你准备好了吗?")
             if (a) {
-              let b=confirm("Are you really sure about this? YOU WILL LOSE EVERYTHING YOU HAVE!")
+              let b=confirm("你真的确定吗?你会失去你所拥有的一切!")
               if (b) {
-                let c=confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT! YOU WILL LOSE EVERYTHING AND YOU CAN'T UNDO THIS AND MOM WILL GET MAD AND YOU WILL SEE A GLIMPSE OF THE UNKNOWN AND THIS IS YOUR LAST CHANCE!!!")
+                let c=confirm("你真的想这么做吗?你会失去一切，你无法挽回，妈妈会生气，你会看到未知的一瞥，这是你最后的机会!!")
                 if (c) {
                   collapse()
                 }
