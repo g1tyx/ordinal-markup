@@ -189,7 +189,7 @@ var cnItems = {
     'Gain 5x as much ': '获得5倍的',
     'In odd numbered challenges, Dynamic factor is squared': '在奇数挑战中，动态因子平方',
     'Dynamic decreases 1.00e299 times slower': '动态降低1.00e299倍慢',
-    'The base is reduced by 4 if it\'s over': '如果结束，则基数减少4',
+    'The base is reduced by 4 if it\'s over': '基数减少4当它超过',
     '': '',
     '': '',
     '': '',
