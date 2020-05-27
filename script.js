@@ -542,7 +542,7 @@ function changeColor() {
 
 
 function changeInt() {
-  let newms = prompt("Please type in the new millisecond interval (20≤x≤1000)")
+  let newms = prompt("请输入新的毫秒间隔 (20≤x≤1000)")
   if (20<=Number(newms) && Number(newms)<=1000 && (!isNaN(Number(newms)))) {
     game.msint = Math.round(Number(newms))
     save()
@@ -551,14 +551,14 @@ function changeInt() {
 }
 
 function changeOrdLengthLess() {
-  let newms = prompt("Please type in the new max length. Type in 0 for no maximum")
+  let newms = prompt("请输入新的最大长度。 输入0表示没有最大值")
   if (!isNaN(Number(newms))) {
     game.maxOrdLength.less = Math.round(Number(newms))
   }
 }
 
 function changeOrdLengthMore() {
-  let newms = prompt("Please type in the new max length. Type in 0 for no maximum")
+  let newms = prompt("请输入新的最大长度。 输入0表示没有最大值")
   if (!isNaN(Number(newms))) {
     game.maxOrdLength.more = Math.round(Number(newms))
   }
@@ -976,7 +976,7 @@ var autoSave = window.setInterval(function() {
 }, 10000)
 
 function resetConf() {
-  let code = prompt("Are you sure you want to delete all of your progress? Type in \"yes\" to reset all of your progress.")
+  let code = prompt("您确定要删除所有进度吗？ 输入 yes 以重置所有进度。")
   if (code.toLowerCase()=="yes") reset()
 }
 
@@ -1155,7 +1155,7 @@ function copyStringToClipboard(str) {
   document.body.appendChild(el);
   copyToClipboard(el)
   document.body.removeChild(el);
-  alert("Copied to clipboard")
+  alert("存档已复制到剪切板")
 }
 
 function copyToClipboard(el) {

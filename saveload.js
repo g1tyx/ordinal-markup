@@ -234,7 +234,7 @@ function exporty() {
 
 function importy() {
   let loadgame=""
-  loadgame=JSON.parse(atob(prompt("Paste in your save WARNING: WILL OVERWRITE YOUR CURRENT SAVE")))
+  loadgame=JSON.parse(atob(prompt("粘贴您的存档到框里。警告：这将覆盖您当前的游戏进度")))
   if (loadgame!="") {
     loadGame(loadgame)
   }
