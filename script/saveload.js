@@ -1,4 +1,5 @@
 "use strict";
+let reader = new FileReader();
 
 function reset() {
   game = {
@@ -34,7 +35,7 @@ function reset() {
   manifolds: 0,
   iups: [0, 0, 0, 0, 0, 0, 0, 0, 0],
   buchholz: 1,
-  theme: 0,
+  theme: 1,
   msint: 50,
   maxOrdLength: { less: 5, more: 7 },
   colors: 0,
@@ -83,8 +84,23 @@ function reset() {
   sfEver: [],
   mostChal4: 0,
   refundPoints: 0,
-  refundPointProg: 0
-  };
+  refundPointProg: 0,
+  omegaChallenge: 0,
+  ocBestIncrementy: [EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0)],
+  challenge2: [0,0],
+  incrementyDouble: 0,
+  bestFBps: 0,
+  advAutoShift: 0,
+  chal9: 0,
+  chal9Comp: 0,
+  mostChal8Comp: 0,
+  bestPsi: 0,
+  fileExport: 1,
+  bestIncrementy: EN(0),
+  ocConf: {enter: 1, exit: 1, double: 1}
+  }
+  //By default, it should be a file export k
+  //Since with plain text you can lose it easily
   document.getElementById("infinityTabButton").style.display = "none";
   render();
   updateFactors();
@@ -200,6 +216,19 @@ function handlePost0211Saves() {
     }
     game.version = 0.31;
   }
+  if (game.version === 0.31) {
+   game.upgrades=game.upgrades.filter(x => {return ![17,24].includes(x)})
+   game.version = 0.34;
+  }
+  if (game.version === 0.34) {
+    if (game.darkManifolds>=1e128) { //changed this from 1e125 to 1e128, though I doubt it would change anything
+      alert("Oh hi, you used a game-breaking bug in challenge 8 that was patched. Would you like to revert your save to pre-Omega Challenge?")
+      localStorage.ordinalMarkupSave=atob("eyJiYXNlIjozLCJvcmQiOjAsIm92ZXIiOjAsImNhbkluZiI6ZmFsc2UsIk9QIjowLCJpbmZVbmxvY2siOjEsInN1YlRhYiI6MiwiYnN1YlRhYiI6MSwiY3N1YlRhYiI6Niwic3VjY0F1dG8iOjAsImxpbUF1dG8iOjAsImF1dG9Mb29wIjp7InN1Y2MiOjAsImxpbSI6MH0sImZhY3RvclNoaWZ0cyI6NywiZmFjdG9ycyI6WzAsMCwwLDAsMCwwLDBdLCJsYXN0VGljayI6MTU5MzAyNTgyNzMzOSwidmVyc2lvbiI6MC4zMSwiYm9vc3RVbmxvY2siOjEsImJvb3N0ZXJzIjozLjU2MzUzMTcwNzQ0MDM5NmUrMjMsInVwZ3JhZGVzIjpbNCw4LDEyLDE2LDIwLDEsMiwzLDUsNiw3LDksMTEsMTMsMTUsMTcsMTksMjNdLCJmYWN0b3JCb29zdHMiOjg0NDI0Mzc1MDgwOCwiZHluYW1pYyI6MSwiZHluYW1pY1VubG9jayI6MSwibWF4QXV0byI6MCwiaW5mQXV0byI6MCwiYkF1dG9Mb29wIjp7Im1heCI6My4zMjczNTg0MTEzNDc0NTJlLTQzLCJpbmYiOjMuMzI3MzU4NDExMzQ3NDUyZS00M30sImF1dG9PbiI6eyJtYXgiOjEsImluZiI6MX0sImNoYWxsZW5nZSI6MCwiY2hhbGxlbmdlQ29tcGxldGlvbiI6WzMsMywzLDMsMywzLDNdLCJpbmNyZW1lbnR5Ijp7ImFycmF5IjpbWzAsNC44MzE4MTIwOTQyNzgyMDQzZS0xOTFdXSwibGF5ZXIiOjAsInNpZ24iOjF9LCJtYW5pZm9sZHMiOjE3LCJpdXBzIjpbMTcsMjgsOSwxLDEsMSwxLDEsMV0sImJ1Y2hob2x6IjoxLCJ0aGVtZSI6MSwibXNpbnQiOjUwLCJtYXhPcmRMZW5ndGgiOnsibGVzcyI6MCwibW9yZSI6M30sImNvbG9ycyI6MSwibXVzaWMiOjMsImNoYWw4IjowLCJjaGFsOENvbXAiOjE1LCJkZWNyZW1lbnR5IjowLCJjb2xsYXBzZWQiOjAsIm1hbnVhbENsaWNrc0xlZnQiOjEwMDAsImNvbGxhcHNlVW5sb2NrIjoxLCJjYXJkaW5hbHMiOnsiYXJyYXkiOltbMCwzMy40NzY2ODE4ODk4MTI1MV0sWzEsMV1dLCJsYXllciI6MCwic2lnbiI6MX0sImNvbGxhcHNlVGltZSI6ODQzMTIwLjk2NzAwMTIwNjUsInJlYWNoZWRCSE8iOjEsImFzc0NhcmQiOlt7InBvaW50cyI6eyJhcnJheSI6W1swLDMyLjExODIyMDQ1OTQ1OF0sWzEsMV1dLCJsYXllciI6MCwic2lnbiI6MX0sInBvd2VyIjp7ImFycmF5IjpbWzAsMTk2LjMyNDk0NTM1MjI0NDFdLFsxLDFdXSwibGF5ZXIiOjAsInNpZ24iOjF9LCJtdWx0Ijp7ImFycmF5IjpbWzAsMTk2LjMyNDk0NTM1MjI0NDFdXSwibGF5ZXIiOjAsInNpZ24iOjF9fSx7InBvaW50cyI6eyJhcnJheSI6W1swLDMyLjExODIyMDQ1OTQ1OF0sWzEsMV1dLCJsYXllciI6MCwic2lnbiI6MX0sInBvd2VyIjp7ImFycmF5IjpbWzAsMTk2LjMyNDk0NTM1MjI0NDFdLFsxLDFdXSwibGF5ZXIiOjAsInNpZ24iOjF9LCJtdWx0Ijp7ImFycmF5IjpbWzAsMTczNy4zMTM3MTk2MjQ0NDVdXSwibGF5ZXIiOjAsInNpZ24iOjF9fSx7InBvaW50cyI6eyJhcnJheSI6W1swLDMyLjExODIyMDQ1OTQ1OF0sWzEsMV1dLCJsYXllciI6MCwic2lnbiI6MX0sInBvd2VyIjp7ImFycmF5IjpbWzAsMTk2LjMyNDk0NTM1MjI0NDFdLFsxLDFdXSwibGF5ZXIiOjAsInNpZ24iOjF9LCJtdWx0Ijp7ImFycmF5IjpbWzAsMjYzMC43NTQyNjc3MjAwNzFdXSwibGF5ZXIiOjAsInNpZ24iOjF9fV0sImxlYXN0Qm9vc3QiOjEsImFsZXBoT21lZ2EiOnsiYXJyYXkiOltbMCwzMC4zMDA4ODg0NTAxNjUwNTRdLFsxLDFdXSwibGF5ZXIiOjAsInNpZ24iOjF9LCJhdXBzIjpbMSwyLDMsNCw1LDYsNyw4LDldLCJhc3NCZWZvcmUiOjEsImR1cHMiOls0NCwxMCwzMiwwLDAsMCwwLDAsMF0sImRhcmtNYW5pZm9sZHMiOjkuMDYzMDE5NDA0NTQyOTI0ZSszMSwiZGFya01hbmlmb2xkTWF4IjoxLCJjQXV0b09uIjp7InNoaWZ0IjoxLCJib29zdCI6MX0sImNBdXRvTG9vcCI6eyJzaGlmdCI6MCwiYm9vc3QiOjB9LCJvZmZsaW5lUHJvZyI6MSwic2hpZnRBdXRvIjp7ImFycmF5IjpbWzAsMjYuMjQwOTczNjg0MjA1MTczXSxbMSwxXV0sImxheWVyIjowLCJzaWduIjoxfSwiYm9vc3RBdXRvIjp7ImFycmF5IjpbWzAsMjYuMjQwOTczNjg0MjA1MTczXSxbMSwxXV0sImxheWVyIjowLCJzaWduIjoxfSwiZmJDb25maXJtIjowLCJidWxrQm9vc3QiOjEsIm1heEluY3JlbWVudHlSYXRlIjp7ImFycmF5IjpbWzAsODIuNjU4MDEwNjc2MDY5OF0sWzEsMV1dLCJsYXllciI6MCwic2lnbiI6MX0sIm1vc3RDYXJkT25jZSI6eyJhcnJheSI6W1swLDI5LjU3NDA5OTE4ODU2ODM3XSxbMSwxXV0sImxheWVyIjowLCJzaWduIjoxfSwiZmxhc2hJbmNyZW1lbnR5IjoxLCJiQ29uZiI6eyJyZWYiOjAsInJlZkZCIjoxLCJjaGFsIjowLCJjaGFsRkIiOjF9LCJxb2xTTSI6eyJhYnUiOjEsImlnNzMiOjEsImlnYzgiOjEsImFjYyI6MSwibmM4IjoiMyIsImM4IjoiMTIiLCJjYSI6MCwic3QiOjAsInR0bmMiOiIxMDAwIn0sIm1heENhcmQiOnsiYXJyYXkiOltbMCwyNi44NzgyNjg3NDA0MjI1NzNdLFsxLDFdXSwibGF5ZXIiOjAsInNpZ24iOjF9LCJob3RrZXlzT24iOjEsInNpbmciOnsiZG0iOjQ0LCJtIjotMSwibnciOjEwfSwidGhpY2MiOjEsImNvbGxhcHNlQ29uZiI6MSwibW9zdFNpbmciOjcyLCJzcGVudEZ1bmN0aW9ucyI6NDEsInNmQm91Z2h0IjpbMTEsMjIsMzEsNDIsNTEsNjEsNzFdLCJzZkV2ZXIiOlsxMSwyMiwzMSw0Miw1MSw2MSw3MSw2Miw2Myw1MiwzMiwyMSwyMyw3Ml0sImZ1bmN0aW9ucyI6MjQsInNpbmd1bGFyaXR5Ijp7ImRtIjowLCJtIjowLCJudyI6MH0sInFvbFNNMSI6e30sImZhY3RvckJvb3N0Q29uZmlybWF0aW9uIjowLCJkZWNyZW1lbnQiOjk1MCwibGVhc3RCb3N0IjoxMiwiY2hhbDhDb21vIjozfQ==")
+      game.version = 0.341
+      window.location.reload()
+    }
+    game.version = 0.341
+  }
 }
 
 function handleOldVersions(loadgame) {
@@ -233,6 +262,8 @@ function loadGame(loadgame) {
   game.maxIncrementyRate = ENify(game.maxIncrementyRate);
   game.mostCardOnce = ENify(game.mostCardOnce);
   game.maxCard = ENify(game.maxCard);
+  game.bestIncrementy = ENify(game.bestIncrementy);
+  for (let i in game.ocBestIncrementy) {game.ocBestIncrementy[i]=ENify(game.ocBestIncrementy[i])}
   document.getElementById("nonC8Auto").value = game.qolSM.nc8;
   document.getElementById("C8Auto").value = game.qolSM.c8;
   document.getElementById("ttnc").value = game.qolSM.ttnc;
@@ -254,17 +285,48 @@ function loadGame(loadgame) {
 
 
 function save() {
-  if (AF === 0) localStorage.setItem("ordinalMarkupSave", JSON.stringify(game));
+  if (AF === 0) {
+    localStorage.setItem("ordinalMarkupSave", JSON.stringify(game))
+  };
+}
+// hi
+function exporty(file=0) {
+  if(file) {
+    save();
+    let file = new Blob([btoa(JSON.stringify(game))], {type: "text/plain"})
+    window.URL = window.URL || window.webkitURL;
+    let a = document.createElement("a")
+    a.href = window.URL.createObjectURL(file)
+    a.download = "Ordinal Markup Save.txt"
+    a.click()
+    $.notify("File Export Successful!","success")
+  } else {
+    copyStringToClipboard(btoa(JSON.stringify(game)));
+  }
 }
 
-function exporty() {
-  copyStringToClipboard(btoa(JSON.stringify(game)));
-}
+function importy(file=0) {
+  if(file) {
+    let loadgame = "";
+    reader.readAsText(document.getElementById("a").files[0]);
+      
+      window.setTimeout(function() {
+      console.log(52)
+      loadgame=JSON.parse(atob(reader.result))
+      if (loadgame !== "") {
+      loadGame(loadgame);
+      $.notify("Import Successful!","success")
+      }
+      }, 100)
 
-function importy() {
+  } else {
   let loadgame = "";
   loadgame = JSON.parse(atob(prompt("粘贴您的存档到框里。警告：这将覆盖您当前的游戏进度")));
   if (loadgame !== "") {
     loadGame(loadgame);
+    $.notify("Import Successful!","success")
+  }
   }
 }
+
+
