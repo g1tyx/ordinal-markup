@@ -27,7 +27,7 @@ function updateOptions() {
     game.maxOrdLength.more;
   get("changeOrdNotation").textContent =
     "Current Ordinal Notation: " +
-    ["Madore's", "Buchholz's", "Convenient"][game.buchholz];
+    ["Madore's", "Buchholz's", "Convenient", "Velben's"][game.buchholz];
   get("changeTheme").textContent =
     "Current Theme: " +
     ["Light", "Dark", "Space (https://wallpaperplay.com/page-terms)"][
