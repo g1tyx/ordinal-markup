@@ -1306,7 +1306,7 @@ function changeTheme() {
   game.theme = (game.theme + 1) % 3;
 }
 function changeOrdNotation() {
-  game.buchholz = (game.buchholz + 1) % 3;
+  game.buchholz = (game.buchholz + 1) % 4;
 }
 
 function iup(n, spectate = 0) {
