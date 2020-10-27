@@ -357,7 +357,7 @@ var cnPrefix = {
 	'Singularity effect is raised to the 1.4': '奇点效果是原来的1.4次方',
 	//'Reduce': '降低',
 	'Each unspent function increases ': '每个未使用的函数将',
-	'Your': '你的',
+	//'Your': '你的',
     'Aleph Power': '阿列夫能量',
     'Aleph Upgrades': '阿列夫升级',
     'Baseless Milestones': '无进制里程碑',
