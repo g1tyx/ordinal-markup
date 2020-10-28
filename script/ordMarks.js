@@ -171,7 +171,7 @@ function setMarks() {
       "φ(2,2,x,0)",
       "φ(2,x,0,0)",
       "φ(x,0,0,0)",
-      "φ(1@x<sub></sub>)",
+      "φ(<sup>1</sup><sub>x</sub>)",
       "ψ(ε<sub>Ω+x</sub>)",
     ],[
     ]
