@@ -1681,7 +1681,7 @@ function displayOrd(
     let output = (colour == 1
       ? color(
           ordMarks[game.buchholz][tempvar],
-          ["ψ", "(", "Ω", ")", "BHO", "^", "×", "@", "+", "!", "$"],
+          ["ψ", "(", "Ω", ")", "BHO", "^", "×", "@", "+", "!", "$", "ε", "ζ", "Γ", "φ", ","],
           HSL(tempvar * 8)
         )
       : ordMarks[game.buchholz][tempvar]
@@ -1701,6 +1701,10 @@ function displayOrd(
           ? colour == 1
             ? "<span style='color:red'>1</span>"
             : "1"
+          : game.buchholz == 3
+          ? colour == 1
+            ? "<span style='color:red'>0</span>"
+            : "0"
           : ""
         : tempvar2
     );
